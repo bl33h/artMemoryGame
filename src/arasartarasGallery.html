@@ -1,0 +1,213 @@
+<!-- Copyright (C), 2023-2024, Sara Echeverria (bl33h)
+     @author Sara Echeverria
+     FileName: arasartarasGallery
+     @version: I
+     Creation: 30/04/2023
+     Last modification: 01/05/2023-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Arasartara's Gallery</title>
+        <!-- Title, icon and react dependencies -->
+        <link rel="icon" href="img/icon.png">
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <style>
+            figure {
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <!-- Background coverage -->
+    <body style="background-image: url('img/backg.png');">
+        <figure>
+            <img src="img/title.png" height="200">
+        </figure>
+
+        <!-- JS -->
+        <div id="root"></div>
+        <div id="game"></div>
+        <script type="text/babel">
+        
+        // Game component
+        const Game = () => {
+            return (
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh',
+                    flexDirection: 'column',
+                }}>
+                <Board />
+            </div>)
+        }
+        
+        // Memory card as a React component
+        const MemoryCard = ({card, onClick}) => {
+            return (
+                <div
+                    style = {{
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        height: '90%',
+                        width: '60%',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        transition: 'transform 0.6s',
+                        transform: card.flipCard ? 'rotateY(0deg)' : 'rotateY(180deg)',
+                        backgroundImage: card.flipCard ? `url(${card.cardFront})` :  'url(./img/cardBack.png)',
+                    }}
+                    onClick = {() => onClick(card.id)}
+                ></div>
+            )
+        }
+        
+        // Board as a React component
+        const Board = () => {
+            const [winGame, setWinning] = React.useState(false);
+            
+            // Cards in the grid implementation
+            const MemoryCards = [
+            { id: 1, cardFront: "./img/aCard.png", flipCard: true },
+            { id: 2, cardFront: "./img/bCard.png", flipCard: true },
+            { id: 3, cardFront: "./img/cCard.png", flipCard: true },
+            { id: 4, cardFront: "./img/dCard.png", flipCard: true },
+            { id: 5, cardFront: "./img/eCard.png", flipCard: true },
+            { id: 6, cardFront: "./img/fCard.png", flipCard: true },
+            { id: 7, cardFront: "./img/gCard.png", flipCard: true },
+            { id: 8, cardFront: "./img/hCard.png", flipCard: true },
+            { id: 9, cardFront: "./img/iCard.png", flipCard: true },
+            { id: 10, cardFront: "./img/jCard.png", flipCard: true }
+        ];
+        
+        // The cards' shuffle
+        const [shuffle, setShuffle] = React.useState([
+            ...MemoryCards,
+            ...MemoryCards.map((card) => ({ ...card, id: card.id + 10 })),
+        ]);
+
+        // Movements counter and reset game button
+        const Movements = ({ total: cardAnimation, setMoves }) => {
+            return (
+            <div
+                style={{
+                color: "#1d1135",
+                fontSize: "30px",
+                marginTop: "450px"
+                }}>
+                <div>Movements: {cardAnimation}</div>
+                <button
+                onClick={() => {
+                    setShuffle((prev) => {
+                    const newMemoryCards = prev.map((MemoryCard) => ({
+                        ...MemoryCard,
+                        flipCard: false,
+                        found: false,
+                    }));
+                    newMemoryCards.sort(() => Math.random() - 0.3);
+                    return newMemoryCards;
+                    });
+                    }}>Reset game
+                    </button>
+                    </div>
+                    );
+                    };
+            
+            // Get and set the movements used
+            const [moves, setMoves] = React.useState(0);
+            
+            // Beginning
+            const beginning = React.useRef(null);
+                    // Matching cards
+                    const withClick = (id) => {
+                        console.log(id)
+                        setShuffle(prev => {
+                            const beforeCard = [...prev]
+                            const cardResult = prev.find(card => card.id === id)
+                            if (cardResult.found) return beforeCard
+                            cardResult.flipCard = !cardResult.flipCard
+                            if (beginning.current === null) {
+                                beginning.current = cardResult
+                                return beforeCard}
+                            else{
+                                if (beginning.current.cardFront === cardResult.cardFront && beginning.current.id !== cardResult.id) {
+                                    beginning.current.found = true
+                                    cardResult.found = true
+
+                                    console.log('Match')
+                                    console.log(beforeCard)
+                                    const winGame = beforeCard.every(card => card.found)
+                                    if (winGame) {
+                                        setWinning(true)
+                                    }
+                                }
+                                else{
+                                    const flipAgain = beginning.current.id
+                                    setTimeout( () => {
+                                        flips(flipAgain, cardResult.id)
+                                    }, 900)
+                                }
+                                beginning.current = null
+                            }
+                            return beforeCard
+                        })
+                    }
+            
+            // Flip cards
+            const flips = (id_1, id_2) => {
+                setShuffle(prev => {
+                    const newOne = [...prev]
+                    newOne.forEach( (i) => {
+                        if (i.id === id_1 || i.id === id_2) {
+                            i.flipCard = false
+                        }}
+                    )
+                    setMoves(prev => prev + 1)
+                    return newOne
+                })
+            }
+
+            // Flip card effect and grid config
+            React.useEffect(() => {
+                setShuffle(prev => {
+                    const newCards = prev.map(card => ({...card, flipCard: false, found: false}))
+                    newCards.sort(() => Math.random() - 0.3)
+                    return newCards
+                })
+            }, [])
+            return (
+                <div style = {{
+                    alignItems: 'right',
+                    justifyContent: 'right',
+                }}>
+                <Movements total={moves} />
+                {winGame &&
+                    <div style = {{
+                        fontSize: '30px',
+                        color: 'black',
+                        fontWeight: 'bold',
+                        marginBottom: '20px',
+                        marginTop: '20px',
+                    }}>Game finished</div>
+                }
+                <div style = {{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    gridTemplateRows: 'repeat(5, 1fr)',
+                    width: '1300px',
+                    height: '1300px',
+                    marginTop: '50px',
+                }}>
+                {shuffle.map(card => <MemoryCard key={card.id} card={card} onClick={withClick} />)}
+                </div>
+                </div>
+            )
+        }
+        ReactDOM.render(<Game />, document.getElementById('root'))
+    </script>
+</body>
+</html>
