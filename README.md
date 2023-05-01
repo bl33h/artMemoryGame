@@ -1,5 +1,5 @@
 # artMemoryGame
-A memory game with an art theme
+A memory game with an art theme.
 ## Files
 - src: the file that implements de solution.
 - img: famous paintings for the cards.
