@@ -7,24 +7,13 @@ Arasartara's Gallery is a captivating memory game implemented with React, presen
   <br>
 </p>
 <p align="center" >
-  <a href="#features">Features</a> •
-  <a href="#Files">Files</a> •
+  <a href="#Files">Files</a> 
   <a href="#how-to-use">How To Use</a> •
   <a href="#packages">Packages</a>   
 </p>
 <p align="center" >
 <a href="https://arasarmemory.netlify.app/">Try it out here</a> 
 </p>
-
-## Features
-
-* Vite
-```bash
-# Install dependencies
-$ npm i
-# run the app
-$ npm run dev
-```
 
 ## Files
 
