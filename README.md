@@ -7,7 +7,7 @@ Arasartara's Gallery is a captivating memory game implemented with React, presen
   <br>
 </p>
 <p align="center" >
-  <a href="#Files">Files</a> 
+  <a href="#Files">Files</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#packages">Packages</a>   
 </p>
