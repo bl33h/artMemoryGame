@@ -3,7 +3,7 @@ Arasartara's Gallery is a captivating memory game implemented with React, presen
 
 <p align="center">
   <br>
-  <img src="[https://i.imgur.com/pmjxiIR.png](https://i.imgur.com/ZW3EpGw.png)" alt="pic" width="400">
+  <img src="https://i.imgur.com/ZW3EpGw.png" alt="pic" width="400">
   <br>
 </p>
 <p align="center" >
